@@ -22,6 +22,7 @@ router.post("/register", async (req, res, next) => {
                 gender: req.body.gender,
                 motherName: req.body.motherName,
                 phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
                 babyPicture: req.body.babyPicture,
                 immunizationCard: req.body.immunizationCard
             }
