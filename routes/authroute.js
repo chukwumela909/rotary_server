@@ -34,18 +34,6 @@ router.post("/register", async (req, res, next) => {
     }
 })
 
-router.post("/vote", async (req, res, next) => {
-    try {
-      
-        return res.status(200).json({ error: false, message: baby })
-
-    } catch (error) {
-        return res.json({ error: true, message: error})
-    }
-})
-
-
-
 
 
 
