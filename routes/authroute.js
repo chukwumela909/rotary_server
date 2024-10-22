@@ -6,13 +6,13 @@ const nodemailer = require('nodemailer');
 
 const { generateToken } = require("../controllers/userController");
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail', // e.g., Gmail, Outlook, etc. Use 'smtp.mailtrap.io' for testing with Mailtrap
-    auth: {
-        user: 'amweb.ng@gmail.com', // Your email address
-        pass: 'Golda909%%', // Your email password (use an app password for Gmail)
-    },
-});
+// const transporter = nodemailer.createTransport({
+//     service: 'gmail', // e.g., Gmail, Outlook, etc. Use 'smtp.mailtrap.io' for testing with Mailtrap
+//     auth: {
+//         user: 'amirizew@gmail.com', // Your email address
+//         pass: 'guokgbgumyaafcoe', // Your email password (use an app password for Gmail)
+//     },
+// });
 
 
 
@@ -58,27 +58,26 @@ router.get("/babies", async (req, res, next) => {
 })
 
 
-router.post("/send-mail", async (req, res, next) => {
+router.post("/send-vote", async (req, res, next) => {
     try {
-        const { to, subject, text } = req.body;
+        const { name, email, amount, baby_id, receipt_img, vote_number} = req.body;
 
-        // Email options
-        const mailOptions = {
-            from: 'amweb.ng@gmail.com', // Sender's email
-            to, // Recipient's email
-            subject, // Email subject
-            text, // Email body
-        };
+        const baby = await Baby.findOne({ id: baby_id });
 
-        // Send the email
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log('Error sending email:', error);
-                return res.json({ error: true, message: error })
+        const thevote = await Baby.create(
+            {
+                voterName: name,
+                voterEmail: email,
+                amount: amount,
+                receipt: receipt_img,
+                vote: vote_number,
+                babyName: baby.name,
+                motherName: baby.motherName,
+                babyphoto:  baby.babyPicture,
             }
-            console.log('Email sent:', info.response);
-            res.status(200).send('Email sent successfully');
-        });
+        )
+        return res.status(200).json({ error: false, message: thevote })
+
 
     } catch (error) {
         return res.json({ error: true, message: error })
