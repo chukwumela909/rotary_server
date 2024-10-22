@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail', // e.g., Gmail, Outlook, etc. Use 'smtp.mailtrap.io' for testing with Mailtrap
     auth: {
         user: 'amweb.ng@gmail.com', // Your email address
-        pass: 'Golda909%', // Your email password (use an app password for Gmail)
+        pass: 'Golda909%%', // Your email password (use an app password for Gmail)
     },
 });
 
