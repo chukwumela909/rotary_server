@@ -2,12 +2,21 @@ const express = require("express")
 const Baby = require('../models/user')
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcryptjs")
+const nodemailer = require('nodemailer');
+
 const { generateToken } = require("../controllers/userController");
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail', // e.g., Gmail, Outlook, etc. Use 'smtp.mailtrap.io' for testing with Mailtrap
+    auth: {
+        user: 'amweb.ng@gmail.com', // Your email address
+        pass: 'Golda909%', // Your email password (use an app password for Gmail)
+    },
+});
 
 
 
 const router = express.Router()
-
 
 
 router.post("/register", async (req, res, next) => {
@@ -47,6 +56,37 @@ router.get("/babies", async (req, res, next) => {
         return res.json({ error: true, message: error })
     }
 })
+
+
+router.post("/send-mail", async (req, res, next) => {
+    try {
+        const { to, subject, text } = req.body;
+
+        // Email options
+        const mailOptions = {
+            from: 'amweb.ng@gmail.com', // Sender's email
+            to, // Recipient's email
+            subject, // Email subject
+            text, // Email body
+        };
+
+        // Send the email
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log('Error sending email:', error);
+                return res.status(500).send('Failed to send email');
+            }
+            console.log('Email sent:', info.response);
+            res.status(200).send('Email sent successfully');
+        });
+
+    } catch (error) {
+        return res.json({ error: true, message: error })
+    }
+})
+
+
+
 
 
 
