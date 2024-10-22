@@ -30,7 +30,21 @@ router.post("/register", async (req, res, next) => {
         return res.status(200).json({ error: false, message: baby })
 
     } catch (error) {
-        return res.json({ error: true, message: error})
+        return res.json({ error: true, message: error })
+    }
+})
+
+router.get("/babies", async (req, res, next) => {
+    try {
+        // const babyExists = await Baby.findOne({ phoneNumber: req.body.phoneNumber })
+        // if (babyExists) return res.json({ error: true, message: "Baby already registered" })
+
+        const babies = await Baby.find()
+        return res.status(200).json({ error: false, message: babies })
+
+
+    } catch (error) {
+        return res.json({ error: true, message: error })
     }
 })
 
