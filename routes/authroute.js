@@ -1,5 +1,6 @@
 const express = require("express")
 const Baby = require('../models/user')
+const Vote = require('../models/votes')
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcryptjs")
 const nodemailer = require('nodemailer');
@@ -43,6 +44,31 @@ router.post("/register", async (req, res, next) => {
     }
 })
 
+router.post("/get-baby", async (req, res, next) => {
+    try {
+        const baby = await Baby.findOne({ _id: req.body.id });
+        if (!baby) return res.json({ error: true, message: "Baby not found" });
+        return res.status(200).json({ error: false, message: baby });
+    } catch (error) {
+        return res.json({ error: true, message: error });
+    }
+})
+
+router.put("/update-baby/:id", async (req, res, next) => {
+    try {
+        const baby = await Baby.findByIdAndUpdate(req.params.id, {
+            name: req.body.name,
+            age: req.body.age,
+            gender: req.body.gender,
+            votes: req.body.vote
+        }, { new: true });
+        if (!baby) return res.json({ error: true, message: "Baby not found" });
+        return res.status(200).json({ error: false, message: baby });
+    } catch (error) {
+        return res.json({ error: true, message: error });
+    }
+})
+
 router.get("/babies", async (req, res, next) => {
     try {
         // const babyExists = await Baby.findOne({ phoneNumber: req.body.phoneNumber })
@@ -61,10 +87,11 @@ router.get("/babies", async (req, res, next) => {
 router.post("/send-vote", async (req, res, next) => {
     try {
         const { name, email, amount, baby_id, receipt_img, vote_number} = req.body;
+        console.log({name, email, amount, baby_id, receipt_img, vote_number})
 
-        const baby = await Baby.findOne({ id: baby_id });
+        const baby = await Baby.findOne({ _id: baby_id });
 
-        const thevote = await Baby.create(
+        const thevote = await Vote.create(
             {
                 voterName: name,
                 voterEmail: email,
@@ -80,11 +107,23 @@ router.post("/send-vote", async (req, res, next) => {
 
 
     } catch (error) {
-        return res.json({ error: true, message: error })
+        return res.json({ error: true, message: "the"+error })
     }
 })
 
+router.get("/votes", async (req, res, next) => {
+    try {
+        // const babyExists = await Baby.findOne({ phoneNumber: req.body.phoneNumber })
+        // if (babyExists) return res.json({ error: true, message: "Baby already registered" })
 
+        const votes = await Vote.find()
+        return res.status(200).json({ error: false, message: votes })
+
+
+    } catch (error) {
+        return res.json({ error: true, message: error })
+    }
+})
 
 
 

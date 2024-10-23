@@ -11,7 +11,7 @@ const babySchema = new Schema({
   email: { type: String, required: true },
   babyPicture: { type: String },
   immunizationCard: { type: String },
-  votes: {type: Number, default: 0, required: true},
+  votes: {type: String, default: "0", required: true},
   date: { type: Date, default: Date.now },
 });
 
