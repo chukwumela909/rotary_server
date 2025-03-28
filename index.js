@@ -46,7 +46,37 @@ app.use(function (req, res, next) {
 })
 
 
+app.post('/send-email', async (req, res) => {
+    const { first_name, last_name, email, phone, state,accepted_terms } = req.body;
 
+    if (!first_name || !last_name || !email || !phone || !state || !accepted_terms) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
+
+    // Configure Nodemailer
+    const transporter = nodemailer.createTransport({
+        service: 'gmail', // e.g., Gmail, Yahoo, etc.
+        auth: {
+            user: "osr.cty@gmail.com",
+            pass: "zvrgivcbkwzdxape",
+        },
+    });
+
+    const mailOptions = {
+        from: email,
+        to: 'samsonrichfield@gmail.com', // Where to receive messages
+        subject: `Details: ${subject}`,
+        text: `From: ${first_name} ${last_name} <${email}>\n\Phone:\n${phone} State:  ${state}`,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ message: 'Email sent successfully!' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to send email.' });
+    }
+});
 
 app.use('/admin', adminRoute)
 app.use('/auth', authenticationRoute)
