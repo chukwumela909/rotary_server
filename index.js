@@ -42,7 +42,7 @@ app.use(function (req, res, next) {
     req.header("Content-Type: application/x-www-form-urlencoded");
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", " GET, POST, OPTIONS, PUT, PATCH, DELETE")
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-refresh-token");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-access-token, x-refresh-token, access-control-allow-origin");
 
     res.header(
         'Access-Control-Expose-Headers',
@@ -52,6 +52,13 @@ app.use(function (req, res, next) {
 
     next();
 })
+
+app.use(cors({
+    origin: 'https://msicredit.netlify.app', // Allow requests only from this origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token', 'x-refresh-token'], // Allowed headers
+    exposedHeaders: ['x-access-token', 'x-refresh-token'] // Exposed headers
+}));
 
 
 
@@ -71,6 +78,8 @@ console.log(encodedCredential)
 
 app.get('/test', (req, res) => {
     res.status(200).json({ message: 'Test route is working!' });
+
+
 });
 
 app.post('/send-email', async (req, res) => {
