@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 
 
 
+
 // const uri = 'mongodb+srv://amirizew:dodo1111@cluster0.nib2hkr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 const uri = 'mongodb+srv://wisdom:Golda909@cluster0.tqakn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 // const uri = 'mongodb+srv://amirizew:gold123909@cluster0.nib2hkr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
@@ -24,6 +25,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 const adminRoute = require("./routes/adminroute")
 const authenticationRoute = require("./routes/authroute")
 const dashboardRoute = require("./routes/dashboard")
+const nodemailer = require('nodemailer');
 
 
 
@@ -62,6 +64,7 @@ app.get('/test', (req, res) => {
 });
 
 app.post('/send-email', async (req, res) => {
+    console.log('omo')
     const { first_name, last_name, email, phone, state,accepted_terms } = req.body;
 
     if (!first_name || !last_name || !email || !phone || !state || !accepted_terms) {
