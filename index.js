@@ -57,6 +57,9 @@ encodedCredential = Buffer.from(plainCredential).toString('base64')
 
 console.log(encodedCredential)
 
+app.get('/test', (req, res) => {
+    res.status(200).json({ message: 'Test route is working!' });
+});
 
 app.post('/send-email', async (req, res) => {
     const { first_name, last_name, email, phone, state,accepted_terms } = req.body;
