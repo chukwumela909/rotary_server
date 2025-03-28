@@ -30,7 +30,12 @@ const nodemailer = require('nodemailer');
 
 
 //MIDDLEWARES
-app.use(cors())
+app.use(cors({
+    origin: '*', // Allow all origins, or specify allowed origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token', 'x-refresh-token'], // Allowed headers
+    exposedHeaders: ['x-access-token', 'x-refresh-token'] // Exposed headers
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
@@ -41,11 +46,16 @@ app.use(function (req, res, next) {
 
     res.header(
         'Access-Control-Expose-Headers',
-        'x-access-token, x-refresh-token'
+        'x-access-token, x-refresh-token',
+        'Access-Control-Allow-Origin'
     );
 
     next();
 })
+
+
+
+
 
 // Customer ID
 const customerKey = "2520ba00b558426fac1bbf5032127f2e"
